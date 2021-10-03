@@ -1,0 +1,26 @@
+{
+  "name": "data-selfie-app",
+  "version": "1.0.0",
+  "description": "Data Selfie App",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mahdi-robbani/data-selfie-app.git"
+  },
+  "keywords": [
+    "data",
+    "selfie"
+  ],
+  "author": "Mahdi",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mahdi-robbani/data-selfie-app/issues"
+  },
+  "homepage": "https://github.com/mahdi-robbani/data-selfie-app#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
