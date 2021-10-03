@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- css file link -->
+    <link rel="stylesheet" type="text/css" href="index.css">
+    <meta charset="utf-8" />
+    <!--Leaflet stylesheet link -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+    integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+    crossorigin=""/>
+    <!-- Make sure you put this AFTER Leaflet's CSS -->
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+    integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+    crossorigin=""></script>
+    <style></style>
+    <title>ISS API</title>
+  </head>
+  <body>
+      <h1>Where is the ISS?</h1>
+      <p>Latitude: <span id = "lat"></span></p>
+      <p>Longitude: <span id = "lon"></span></p>
+      <p>Velocity: <span id = "vel"></span></p>
+      <div id="issMap"></div>
+      <script src="index.js"></script>
+  </body>
+</html>
