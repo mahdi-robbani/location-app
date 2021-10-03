@@ -23,7 +23,7 @@ async function getData(url, map, marker){
 //creare map and tiles
 //use tiles from openstreetmap
 const tileUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
-const issMap = L.map('issMap').setView([0, 0], 2);
+const issMap = L.map('issMap', {minZoom: 2}).setView([0, 0], 2);
 const tileOptions = {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
 }
