@@ -5,16 +5,10 @@
   </head>
   <body>
       <h1>Data Selfie App</h1>
-      <script>
-        if('geolocation' in navigator) {
-          console.log('Geolocation is available')
-          navigator.geolocation.getCurrentPosition((position) => {
-          console.log(position.coords.latitude, position.coords.longitude);
-        });
-        } else {
-          console.log('Geolocation is not available')
-        }
-      </script>
-      <a href="ISS/index.html">ISS page</a>
+      <a href="ISS/ISS.html">ISS page</a>
+      <p>Latitude: <span id="lat"></span> </br>
+        Longitude: <span id="lon"></span> 
+      </p>
+      <script src="index.js"></script>
   </body>
 </html>
