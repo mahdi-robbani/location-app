@@ -1,20 +1,20 @@
 //create map and tiles
 //use tiles from openstreetmap
 const tileUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
-const issMap = L.map('issMap', {minZoom: 2}).setView([0, 0], 2);
+const geoMap = L.map('geoMap', {minZoom: 2}).setView([0, 0], 2);
 const tileOptions = {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
 }
 const tiles = L.tileLayer(tileUrl, tileOptions)
-tiles.addTo(issMap)
+tiles.addTo(geoMap)
 // //set up icon
-// const issIcon = L.icon({
-//     iconUrl: 'iss256.png',
+// const geoIcon = L.icon({
+//     iconUrl: 'geo256.png',
 //     iconSize: [50, 32],
 //     iconAnchor: [25, 16],
 // });
 //create marker
-let issMarker = L.marker([0, 0]).addTo(issMap);
+let geoMarker = L.marker([0, 0]).addTo(geoMap);
 
 function geolocate(){
   if('geolocation' in navigator) {
@@ -22,8 +22,12 @@ function geolocate(){
     navigator.geolocation.getCurrentPosition((position) => {
       const {latitude, longitude} = position.coords
       //console.log(position.coords.latitude, position.coords.longitude);
-      document.getElementById('lat').textContent = position.coords.latitude;
-      document.getElementById('lon').textContent = position.coords.longitude;
+      document.getElementById('lat').textContent = latitude;
+      document.getElementById('lon').textContent = longitude;
+      //update marker
+      geoMarker.setLatLng([latitude, longitude]);
+      //update view
+      geoMap.setView([latitude, longitude], 10);
   });
   } else {
     console.log('Geolocation is not available')
