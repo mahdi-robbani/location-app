@@ -19,7 +19,7 @@ let geoMarker = L.marker([0, 0]).addTo(geoMap);
 function geolocate(){
   if('geolocation' in navigator) {
     console.log('Geolocation is available')
-    navigator.geolocation.getCurrentPosition((position) => {
+    navigator.geolocation.getCurrentPosition( async (position) => {
       const {latitude, longitude} = position.coords
       //console.log(position.coords.latitude, position.coords.longitude);
       document.getElementById('lat').textContent = latitude;
@@ -37,8 +37,9 @@ function geolocate(){
         },
         body: JSON.stringify(data),
       };
-      fetch('/api', options);
-      console.log("Sent data to server")
+      const response = await fetch('/api', options);
+      const response_data = await response.json();
+      console.log(response_data);
   });
   } else {
     console.log('Geolocation is not available')

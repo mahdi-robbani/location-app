@@ -12,6 +12,9 @@ app.use(express.json({limit: '1mb'}));
 
 //add endpoints
 app.post('/api', (request, response) => {
-    console.log(request.body);
+    response.json({
+        status: "success",
+        data: request.body,
+    })
 });
 //nodemon ./server.js
