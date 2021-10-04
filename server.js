@@ -1,5 +1,6 @@
 //import packages
 const express = require('express');
+const fs = require('fs');
 
 //create app
 const app = express();
@@ -15,6 +16,16 @@ app.post('/api', (request, response) => {
     response.json({
         status: "success",
         data: request.body,
+    })
+    fs.readFile("location.txt", 'utf-8', (err, data) => {
+        console.log("File loaded")
+        location = JSON.parse(data)
+        location.push(request.body)
+        console.log(location)
+        fs.writeFile("location.txt", JSON.stringify(location), (err) => {
+            if (err) throw err;
+            console.log("File saved")
+        })
     })
 });
 //nodemon ./server.js

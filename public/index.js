@@ -7,12 +7,6 @@ const tileOptions = {
 }
 const tiles = L.tileLayer(tileUrl, tileOptions)
 tiles.addTo(geoMap)
-// //set up icon
-// const geoIcon = L.icon({
-//     iconUrl: 'geo256.png',
-//     iconSize: [50, 32],
-//     iconAnchor: [25, 16],
-// });
 //create marker
 let geoMarker = L.marker([0, 0]).addTo(geoMap);
 
