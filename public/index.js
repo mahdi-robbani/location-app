@@ -1,4 +1,5 @@
-if('geolocation' in navigator) {
+function geolocate(){
+  if('geolocation' in navigator) {
     console.log('Geolocation is available')
     navigator.geolocation.getCurrentPosition((position) => {
       const {latitude, longitude} = position.coords
@@ -9,3 +10,4 @@ if('geolocation' in navigator) {
   } else {
     console.log('Geolocation is not available')
   }
+}
