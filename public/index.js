@@ -28,6 +28,17 @@ function geolocate(){
       geoMarker.setLatLng([latitude, longitude]);
       //update view
       geoMap.setView([latitude, longitude], 10);
+      //send data to server
+      const data = {latitude, longitude};
+      const options = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data),
+      };
+      fetch('/api', options);
+      console.log("Sent data to server")
   });
   } else {
     console.log('Geolocation is not available')
