@@ -1,6 +1,7 @@
 //import packages
 const express = require('express');
 const fs = require('fs');
+const {MongoClient} = require('mongodb');
 
 //create app
 const app = express();
@@ -17,6 +18,10 @@ app.post('/api', (request, response) => {
         status: "success",
         data: request.body,
     })
+    updateLocalFile(request)
+});
+
+function updateLocalFile(request){
     fs.readFile("location.txt", 'utf-8', (err, data) => {
         console.log("File loaded")
         location = JSON.parse(data)
@@ -27,5 +32,7 @@ app.post('/api', (request, response) => {
             console.log("File saved")
         })
     })
-});
+}
+
+
 //nodemon ./server.js
