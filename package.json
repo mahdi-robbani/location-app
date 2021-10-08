@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/mahdi-robbani/data-selfie-app#readme",
   "dependencies": {
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "mongodb": "^4.1.3"
   }
 }
