@@ -39,6 +39,7 @@ async function accessDb(request){
             latitude: request.body.latitude,
             longitude: request.body.longitude,
             date: Date.now(),
+            city: request.body.city,
         }
         await createLocation(client, newLocation);
 

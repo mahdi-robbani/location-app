@@ -18,12 +18,16 @@ function geolocate(){
       //console.log(position.coords.latitude, position.coords.longitude);
       document.getElementById('lat').textContent = latitude;
       document.getElementById('lon').textContent = longitude;
+      // get city if available
+      city = document.getElementById('city').value
       //update marker
       geoMarker.setLatLng([latitude, longitude]);
       //update view
       geoMap.setView([latitude, longitude], 10);
       //send data to server
-      const data = {latitude, longitude};
+      const data = {latitude, longitude, city};
+      console.log("DAT")
+      console.log(data)
       const options = {
         method: 'POST',
         headers: {
