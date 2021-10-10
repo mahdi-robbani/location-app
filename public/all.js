@@ -2,29 +2,31 @@ async function getData(){
     const request = await fetch('api/');
     const data = await request.json();
 
-    // data.forEach((elem, ind) => {
-    //     console.log(elem, elem)
-    // })
-
-    for (item of data){
-        //create elements and sub elements
-        const root = document.createElement('div')
-        const loc = document.createElement('div')
-        const city = document.createElement('div')
-        const date = document.createElement('div')
-
-        //Add data to elements
-        loc.textContent = `Latitude: ${item.latitude}, Longitude: ${item.longitude}`
-        cityString = item.city ? item.city : 'None'
-        city.textContent = `City: ${cityString}`
-        const dateString = new Date(item.date).toLocaleString();
-        date.textContent = `Date: ${dateString}`
-
-        //Append sub elements to main element
-        root.append(loc, city, date)
-        //Add to page
-        document.body.append(root)
+    // add table
+    const tbl = document.createElement('table')
+    //add top row
+    const topRow = tbl.insertRow();
+    const columns = ["Latitude", "Longitude", "Date", "City"]
+    for (colName of columns){
+        const topd = topRow.insertCell();
+        topd.appendChild(document.createTextNode(colName))
     }
+
+    // add remaining rows
+    data.forEach((elem, ind) => {
+        tr = tbl.insertRow();
+        for (dataName in elem){
+            //ignore id column
+            if (dataName !== "_id"){
+                const td = tr.insertCell();
+                //replace empty inputs with none
+                const text = elem[dataName] ? elem[dataName] : 'None'
+                td.appendChild(document.createTextNode(text))
+            }
+        }
+    })
+    //Add to page
+    document.body.append(tbl)
 }
 
 getData();
