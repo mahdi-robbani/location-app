@@ -1,7 +1,8 @@
 //import packages
+const { request, response } = require('express');
 const express = require('express');
 const fs = require('fs');
-const {MongoClient} = require('mongodb');
+const {MongoClient, CURSOR_FLAGS} = require('mongodb');
 
 //create app
 const app = express();
@@ -12,21 +13,44 @@ app.use(express.static('public'));
 //enable ability to receive json data
 app.use(express.json({limit: '1mb'}));
 
+//db url
+const url = 'mongodb://127.0.0.1:27017'
+//new instance of mongo client
+const client = new MongoClient(url);
+
 //add endpoints
+app.get('/api', (request, response) => {
+    //access info from db and send to response
+    accessDb(response);
+});
+
 app.post('/api', (request, response) => {
     response.json({
         status: "success",
         data: request.body,
     })
     //updateLocalFile(request)
-    accessDb(request)
+    updateDb(request)
 });
 
-async function accessDb(request){
-    //db url
-    const url = 'mongodb://127.0.0.1:27017'
-    //new instance of mongo client
-    const client = new MongoClient(url);
+async function accessDb(response){
+    try{
+        //connect to client
+        await client.connect();
+
+        //list all entries
+        const data = await getAllLocations(client)
+
+        //send data
+        response.json(data);
+    } catch(e){
+        console.error(e);
+    } finally {
+        await client.close(); 
+    }
+}
+
+async function updateDb(request){
     try{
         //connect to client
         await client.connect();
@@ -42,9 +66,6 @@ async function accessDb(request){
             city: request.body.city,
         }
         await createLocation(client, newLocation);
-
-        //list all entries
-        await showAllLocations(client)
 
     } catch (e) {
         console.error(e)
@@ -72,6 +93,12 @@ async function showAllLocations(client){
     const cursor = await client.db("selfie-data-app").collection("locations").find();
     const result = await cursor.toArray()
     result.forEach(document => console.log(document))
+}
+
+async function getAllLocations(client){
+    const cursor = await client.db("selfie-data-app").collection("locations").find();
+    const result = await cursor.toArray();
+    return result;
 }
 
 function updateLocalFile(request){

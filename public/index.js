@@ -26,8 +26,6 @@ function geolocate(){
       geoMap.setView([latitude, longitude], 10);
       //send data to server
       const data = {latitude, longitude, city};
-      console.log("DAT")
-      console.log(data)
       const options = {
         method: 'POST',
         headers: {
@@ -37,7 +35,6 @@ function geolocate(){
       };
       const response = await fetch('/api', options);
       const response_data = await response.json();
-      console.log(response_data);
   });
   } else {
     console.log('Geolocation is not available')
