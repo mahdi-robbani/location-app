@@ -4,6 +4,7 @@ async function getData(){
 
     // add table
     const tbl = document.createElement('table')
+    tbl.className = "table"
     //add top row
     const topRow = tbl.insertRow();
     const columns = ["Latitude", "Longitude", "Date", "City"]
@@ -26,7 +27,7 @@ async function getData(){
         }
     })
     //Add to page
-    document.body.append(tbl)
+    document.getElementById("list").append(tbl)
 }
 
 getData();
