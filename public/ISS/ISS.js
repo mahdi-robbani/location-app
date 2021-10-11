@@ -15,6 +15,8 @@ const issIcon = L.icon({
 });
 //create marker
 let issMarker = L.marker([0, 0], {icon: issIcon}).addTo(issMap);
+//create position array
+let posArr = [];
 
 // data url
 const issApiUrl = "https://api.wheretheiss.at/v1/satellites/25544"
@@ -28,6 +30,9 @@ async function getData(){
     const {latitude, longitude, velocity} = data;
     //update marker
     issMarker.setLatLng([latitude, longitude]);
+    // update and draw line
+    posArr.push([latitude, longitude]);
+    L.polygon(posArr).addTo(issMap);
     //replace spans with data
     document.getElementById('lat').textContent = latitude.toFixed(4);
     document.getElementById('lon').textContent = longitude.toFixed(4);
