@@ -29,9 +29,9 @@ async function getData(){
     //update marker
     issMarker.setLatLng([latitude, longitude]);
     //replace spans with data
-    document.getElementById('lat').textContent = latitude.toFixed(2);
-    document.getElementById('lon').textContent = longitude.toFixed(2);
-    document.getElementById('vel').textContent = velocity.toFixed(0);
+    document.getElementById('lat').textContent = latitude.toFixed(4);
+    document.getElementById('lon').textContent = longitude.toFixed(4);
+    document.getElementById('vel').textContent = `${velocity.toFixed(2)} mph`;
     //update view
     if (firstTime) {
         issMap.setView([latitude, longitude], 5);
