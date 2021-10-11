@@ -1,5 +1,5 @@
 {
-  "name": "data-selfie-app",
+  "name": "location-app",
   "version": "1.0.0",
   "description": "Data Selfie App",
   "main": "index.js",
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/mahdi-robbani/data-selfie-app.git"
+    "url": "git+https://github.com/mahdi-robbani/location-app.git"
   },
   "keywords": [
     "data",
@@ -17,9 +17,9 @@
   "author": "Mahdi",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/mahdi-robbani/data-selfie-app/issues"
+    "url": "https://github.com/mahdi-robbani/location-app/issues"
   },
-  "homepage": "https://github.com/mahdi-robbani/data-selfie-app#readme",
+  "homepage": "https://github.com/mahdi-robbani/location-app#readme",
   "dependencies": {
     "express": "^4.17.1",
     "mongodb": "^4.1.3"
