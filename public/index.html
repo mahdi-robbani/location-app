@@ -34,26 +34,23 @@
             </div>
         </div>
       </nav>
-      
+
+      <!-- Main page -->
       <div class="container">
         <h1 align="center">Find your location</h1>
-        <div class="form-group">
+
+        <!-- User Input -->
+        <form class="form-inline">
           <label for="city">Enter City:</label>
-          <input 
-              type="text" 
-              class="form-control" 
-              id="city" 
-              name="city" 
-              placeholder="City"
-          />
-        </div>
-        <br />
-        <button type="submit" class="btn btn-primary" onclick="geolocate()">Geolocate</button>
-        <br />
+          <input type="text" id="city" name="city" placeholder="City"/>
+          <button type="button" class="btn btn-primary" onclick="geolocate()">Geolocate</button>
+        </form>
+
+        <!-- Location info -->
         <p>Latitude: <span id="lat"></span> </br>
           Longitude: <span id="lon"></span> 
         </p>
-        <br />
+        <!-- Map -->
         <div id="geoMap"></div>
       </div>
       
