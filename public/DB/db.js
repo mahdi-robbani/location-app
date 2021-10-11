@@ -4,28 +4,37 @@ async function getData(){
 
     // add table
     const tbl = document.createElement('table')
-    tbl.className = "table"
-    //add top row
-    const topRow = tbl.insertRow();
-    const columns = ["Latitude", "Longitude", "Date", "City"]
+    tbl.className = "table table-striped"
+    //add table head
+    const thead = document.createElement('thead')
+    thead.className = "table-dark"
+    const topRow = thead.insertRow();
+    const columns = ["#", "Latitude", "Longitude", "Date", "City"]
     for (colName of columns){
         const topd = topRow.insertCell();
         topd.appendChild(document.createTextNode(colName))
+        topd.scope = "col"
     }
-
-    // add remaining rows
+    tbl.append(thead)
+    //add table body
+    const tbody = document.createElement('tbody')
     data.forEach((elem, ind) => {
-        tr = tbl.insertRow();
+        tr = tbody.insertRow();
         for (dataName in elem){
-            //ignore id column
-            if (dataName !== "_id"){
-                const td = tr.insertCell();
-                //replace empty inputs with none
-                const text = elem[dataName] ? elem[dataName] : 'None'
-                td.appendChild(document.createTextNode(text))
+            const td = tr.insertCell();
+            let text;
+            if (dataName === "_id"){
+                td.scope = "row"
+                text = ind + 1;
             }
+            else{
+                //replace empty inputs with none
+                text = elem[dataName] ? elem[dataName] : 'None'
+            }
+            td.appendChild(document.createTextNode(text))
         }
     })
+    tbl.append(tbody)
     //Add to page
     document.getElementById("list").append(tbl)
 }
