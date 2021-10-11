@@ -1,5 +1,5 @@
 async function getData(){
-    const request = await fetch('api/');
+    const request = await fetch('../api/');
     const data = await request.json();
 
     // add table
