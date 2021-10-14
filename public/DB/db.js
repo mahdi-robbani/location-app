@@ -4,12 +4,12 @@ async function getData(){
 
     // add table
     const tbl = document.createElement('table')
-    tbl.className = "table table-striped"
+    tbl.className = "table"
     //add table head
     const thead = document.createElement('thead')
     thead.className = "table-dark"
     const topRow = thead.insertRow();
-    const columns = ["#", "Latitude", "Longitude", "Date", "City"]
+    const columns = ["#", "Latitude", "Longitude", "Date", "City", ""]
     for (colName of columns){
         const topd = topRow.insertCell();
         topd.appendChild(document.createTextNode(colName))
@@ -33,10 +33,29 @@ async function getData(){
             }
             td.appendChild(document.createTextNode(text))
         }
+        const emptyTd = tr.insertCell()
+        const btn = emptyTd.appendChild(document.createElement("button"))
+        btn.textContent = "Delete"
+        btn.className = "btn btn-primary"
+        btn.onclick = () => { deleteEntry(elem["_id"]) };
     })
     tbl.append(tbody)
     //Add to page
     document.getElementById("list").append(tbl)
+}
+
+async function deleteEntry(locationID){
+    //send id to server
+    const options = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({locationID: locationID}),
+      };
+    const response = await fetch('/delete_location', options);
+    const response_data = await response.json();
+    console.log(response_data["info"])
 }
 
 getData();

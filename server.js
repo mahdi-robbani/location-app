@@ -2,7 +2,7 @@
 const { request, response } = require('express');
 const express = require('express');
 const fs = require('fs');
-const {MongoClient, CURSOR_FLAGS} = require('mongodb');
+const {MongoClient, CURSOR_FLAGS, ObjectId} = require('mongodb');
 
 //create app
 const app = express();
@@ -32,6 +32,31 @@ app.post('/api', (request, response) => {
     //updateLocalFile(request)
     updateDb(request)
 });
+
+app.post('/delete_location', (request, response) => {
+    response.json({
+        status: "success",
+        info: `Deleted location ID: ${request.body.locationID}`
+    })
+    deleteLocation(request.body.locationID)
+})
+
+async function deleteLocation(locationID){
+    try{
+        //connect to client
+        await client.connect();
+
+        //delete location
+        const result = await client.db("selfie-data-app").collection("locations").deleteOne({ "_id" : ObjectId(locationID) } );
+        console.log(`${result.deletedCount} ID deleted: ${locationID}`);
+
+    } catch (e) {
+        console.error(e)
+    } finally {
+        //close connection after performing all operations
+        await client.close()
+    }
+}
 
 async function accessDb(response){
     try{
