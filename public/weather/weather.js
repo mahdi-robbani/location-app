@@ -40,9 +40,14 @@ function geolocate(){
 }
 
 
-//user openweather API
-//const apiURl = `api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${APIkey}`
+//use openweather API
+const APIkey = "4e387a3ca06bb4b8b6a8a67a7dd346c6"
+const lat = 55
+const lon = 12
 
-function getWeather(){
-    console.log("WEATHER")
+
+async function getWeather(){
+    const response = await fetch(`/weather/${lat}/${lon}`);
+    const json = await response.json();
+    console.log(json)
 }

@@ -1,8 +1,13 @@
+//import and set up environment modules
+import dotenv from 'dotenv'
+dotenv.config()
+
 //import packages
-const { request, response } = require('express');
-const express = require('express');
-const fs = require('fs');
-const {MongoClient, CURSOR_FLAGS, ObjectId} = require('mongodb');
+import express from 'express'
+import fs from 'fs'
+import { MongoClient, CURSOR_FLAGS, ObjectId } from 'mongodb'
+import fetch from 'node-fetch';
+
 
 //create app
 const app = express();
@@ -33,6 +38,19 @@ app.post('/api', (request, response) => {
     updateDb(request, "locations")
 });
 
+
+app.get('/weather/:lat/:lon', async (request, response) => {
+    //use openweather API
+    const lat = request.params.lat;
+    const lon = request.params.lon;
+    const APIkey = process.env.API_KEY
+    const apiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${APIkey}`
+    const data = await fetch(apiUrl);
+    const json = await data.json();
+    console.log(lat, lon);
+    response.json(json);
+})
+
 app.post('/weather', (request, response) => {
     response.json({
         status: "success",
@@ -49,6 +67,7 @@ app.post('/delete_location', (request, response) => {
     })
     deleteLocation(request.body.locationID)
 })
+
 
 async function deleteLocation(locationID){
     try{
@@ -147,6 +166,5 @@ function updateLocalFile(request){
         })
     })
 }
-
 
 //nodemon ./server.js
