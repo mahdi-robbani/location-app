@@ -56,6 +56,8 @@ async function deleteEntry(locationID){
     const response = await fetch('/delete_location', options);
     const response_data = await response.json();
     console.log(response_data["info"])
+    //refresh page
+    location.reload();
 }
 
 getData();

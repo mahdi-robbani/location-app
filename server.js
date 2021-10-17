@@ -30,7 +30,16 @@ app.post('/api', (request, response) => {
         data: request.body,
     })
     //updateLocalFile(request)
-    updateDb(request)
+    updateDb(request, "locations")
+});
+
+app.post('/weather', (request, response) => {
+    response.json({
+        status: "success",
+        data: request.body,
+    })
+    //updateLocalFile(request)
+    updateDb(request, "weather")
 });
 
 app.post('/delete_location', (request, response) => {
@@ -75,7 +84,7 @@ async function accessDb(response){
     }
 }
 
-async function updateDb(request){
+async function updateDb(request, collectionName){
     try{
         //connect to client
         await client.connect();
@@ -90,7 +99,7 @@ async function updateDb(request){
             date: Date.now(),
             city: request.body.city,
         }
-        await createLocation(client, newLocation);
+        await createLocation(client, newLocation, collectionName);
 
     } catch (e) {
         console.error(e)
@@ -100,8 +109,8 @@ async function updateDb(request){
     }
 }
 
-async function createLocation(client, newLocation){
-    const result = await client.db("selfie-data-app").collection("locations").insertOne(newLocation);
+async function createLocation(client, newLocation, collectionName){
+    const result = await client.db("selfie-data-app").collection(collectionName).insertOne(newLocation);
     console.log(`New location ID: ${result.insertedId}`);
 }
 
