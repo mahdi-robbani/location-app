@@ -16,8 +16,6 @@ function geolocate(){
     navigator.geolocation.getCurrentPosition( async (position) => {
       const {latitude, longitude} = position.coords
       //console.log(position.coords.latitude, position.coords.longitude);
-      document.getElementById('lat').textContent = latitude;
-      document.getElementById('lon').textContent = longitude;
       //update marker
       geoMarker.setLatLng([latitude, longitude]);
       //update view
@@ -31,23 +29,17 @@ function geolocate(){
         },
         body: JSON.stringify(data),
       };
-      const response = await fetch('/weather', options);
-      const response_data = await response.json();
+      //send get request to server to retreive weather information
+      const response = await fetch(`/weather/${latitude}/${longitude}`);
+      const json = await response.json();
+      console.log(json)
+      const weather = json.weather['0'].main
+      //add info to webpage
+      document.getElementById('lat').textContent = latitude;
+      document.getElementById('lon').textContent = longitude;
+      document.getElementById('weather').textContent = weather;
   });
   } else {
     console.log('Geolocation is not available')
   }
-}
-
-
-//use openweather API
-const APIkey = "4e387a3ca06bb4b8b6a8a67a7dd346c6"
-const lat = 55
-const lon = 12
-
-
-async function getWeather(){
-    const response = await fetch(`/weather/${lat}/${lon}`);
-    const json = await response.json();
-    console.log(json)
 }
