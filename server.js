@@ -24,31 +24,24 @@ const url = 'mongodb://127.0.0.1:27017'
 const client = new MongoClient(url);
 
 //add endpoints
-app.get('/api', (request, response) => {
+app.get('/api', async (request, response) => {
     //access info from db and send to response
-    accessDb(response);
+    accessDb(response, "", "weather", "location-app");
 });
-
-app.post('/api', (request, response) => {
-    response.json({
-        status: "success",
-        data: request.body,
-    })
-    //updateLocalFile(request)
-    updateDb(request, "locations")
-});
-
 
 app.get('/weather/:lat/:lon', async (request, response) => {
-    //use openweather API
+    //receive latlon info from client and use it to get weather +aq data
+    //from external APIs
     const lat = request.params.lat;
     const lon = request.params.lon;
     const APIkey = process.env.API_KEY
 
+    //use openweather API
     const weatherUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${APIkey}`
     const weatherResponse = await fetch(weatherUrl);
     const weatherData = await weatherResponse.json();
     
+    //use open air quality API
     const aqUrl = `https://u50g7n0cbj.execute-api.us-east-1.amazonaws.com/v2/latest?limit=100&page=1&offset=0&sort=desc&coordinates=${lat},${lon}&radius=1000&order_by=lastUpdated&dumpRaw=false`
     const aqResponse = await fetch(aqUrl);
     const aqData = await aqResponse.json();
@@ -61,12 +54,23 @@ app.get('/weather/:lat/:lon', async (request, response) => {
 })
 
 app.post('/weather', (request, response) => {
+    //save weather data to db
     response.json({
         status: "success",
         data: request.body,
     })
-    console.log(request.body)
-    updateDb(request, "weather")
+
+    //update database
+    const newLocation = {
+        date: Date.now(),
+        lat: request.body.latitude,
+        long: request.body.longitude,
+        weather: request.body.weather.weather[0].main,
+        temp: request.body.weather.main.temp,
+        feels: request.body.weather.main.feels_like,
+        aqArray: request.body.aqArray,
+    }
+    updateDb(newLocation, "weather", "location-app")
 });
 
 app.post('/delete_location', (request, response) => {
@@ -77,6 +81,14 @@ app.post('/delete_location', (request, response) => {
     deleteLocation(request.body.locationID)
 })
 
+// app.post('/api', (request, response) => {
+//     response.json({
+//         status: "success",
+//         data: request.body,
+//     })
+//     //updateLocalFile(request)
+//     updateDb(request, "location")
+// });
 
 async function deleteLocation(locationID){
     try{
@@ -84,7 +96,7 @@ async function deleteLocation(locationID){
         await client.connect();
 
         //delete location
-        const result = await client.db("selfie-data-app").collection("locations").deleteOne({ "_id" : ObjectId(locationID) } );
+        const result = await client.db("location-app").collection("locations").deleteOne({ "_id" : ObjectId(locationID) } );
         console.log(`${result.deletedCount} ID deleted: ${locationID}`);
 
     } catch (e) {
@@ -95,13 +107,15 @@ async function deleteLocation(locationID){
     }
 }
 
-async function accessDb(response){
+async function accessDb(response, query, collectionName, dbName){
+    // query data from db
     try{
         //connect to client
         await client.connect();
 
         //list all entries
-        const data = await getAllLocations(client)
+        const cursor = await client.db(dbName).collection(collectionName).find(query);
+        const data = await cursor.toArray();
 
         //send data
         response.json(data);
@@ -112,25 +126,16 @@ async function accessDb(response){
     }
 }
 
-async function updateDb(request, collectionName){
+async function updateDb(newLocation, collectionName, dbName){
+    //update db with new data
     try{
         //connect to client
         await client.connect();
 
-        //list databases
-        //await listDatabases(client);
-
-        //update database
-        const newLocation = {
-            date: Date.now(),
-            lat: request.body.latitude,
-            long: request.body.longitude,
-            weather: request.body.weather.weather[0].main,
-            temp: request.body.weather.main.temp,
-            feels: request.body.weather.main.feels_like,
-            aqArray: request.body.aqArray,
-        }
-        await createLocation(client, newLocation, collectionName);
+        const result = await client.db(dbName).collection(collectionName).insertOne(newLocation);
+        console.log(`Update DB: ${dbName}`)
+        console.log(`Updated collection: ${collectionName}`)
+        console.log(`New location ID: ${result.insertedId}`);
 
     } catch (e) {   
         console.error(e)
@@ -140,33 +145,8 @@ async function updateDb(request, collectionName){
     }
 }
 
-async function createLocation(client, newLocation, collectionName){
-    const result = await client.db("selfie-data-app").collection(collectionName).insertOne(newLocation);
-    console.log(`New location ID: ${result.insertedId}`);
-}
-
-async function listDatabases(client) {
-    //function to list all databases
-    databasesList = await client.db().admin().listDatabases();
-    console.log("Databases:");
-    databasesList.databases.forEach(db => {
-        console.log(` - ${db.name}`)
-    });
-};
-
-async function showAllLocations(client){
-    const cursor = await client.db("selfie-data-app").collection("locations").find();
-    const result = await cursor.toArray()
-    result.forEach(document => console.log(document))
-}
-
-async function getAllLocations(client){
-    const cursor = await client.db("selfie-data-app").collection("locations").find();
-    const result = await cursor.toArray();
-    return result;
-}
-
 function updateLocalFile(request){
+    //load and save data to local file
     fs.readFile("location.txt", 'utf-8', (err, data) => {
         console.log("File loaded")
         location = JSON.parse(data)
