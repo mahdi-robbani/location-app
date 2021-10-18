@@ -41,7 +41,7 @@
         <!--Top row -->
         <div class="row">
           <div class="col-md-10">
-            <h1>Weather</h1>
+            <h1>The weather here</h1>
           </div>
           <div class="col-md-1">
             <!-- User Input -->
@@ -51,7 +51,7 @@
       
         <!--Second Row -->
         <div class="row">
-          <div class="col-md-10">
+          <div class="col-md-9">
             <!-- Map -->
             <div id="geoMap"></div>
           </div>
@@ -61,15 +61,27 @@
               <tbody>
                 <tr>
                   <td>Latitude:</td>
-                  <td><span id = "lat"></span></td>
+                  <td><span id="lat"></span></td>
                 </tr>
                 <tr>
                   <td>Longitude:</td>
-                  <td><span id = "lon"></span></td>
+                  <td><span id="lon"></span></td>
+                </tr>
+                <tr>
+                  <td>Temperature:</td>
+                  <td><span id="temp"></span></td>
+                </tr>
+                <tr>
+                  <td>Feels like:</td>
+                  <td><span id="feels"></span></td>
                 </tr>
                 <tr>
                   <td>Weather:</td>
-                  <td><span id = "weather"></span></td>
+                  <td><span id="weather"></span></td>
+                </tr>
+                <tr>
+                  <td>Air quality<span id="aq_param">:</span></td>
+                  <td><span id="aq_quality"></span></span></td>
                 </tr>
               </tbody>
             </table>

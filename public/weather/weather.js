@@ -33,11 +33,27 @@ function geolocate(){
       const response = await fetch(`/weather/${latitude}/${longitude}`);
       const json = await response.json();
       console.log(json)
-      const weather = json.weather['0'].main
+      //get weather data
+      const weather = json.weather.weather['0'].main
+      const temp = (json.weather.main.temp - 273.15).toFixed(2)
+      const feels = (json.weather.main.feels_like - 273.15).toFixed(2)
       //add info to webpage
-      document.getElementById('lat').textContent = latitude;
-      document.getElementById('lon').textContent = longitude;
+      document.getElementById('lat').textContent = `${latitude}`;
+      document.getElementById('lon').textContent = `${longitude}`;
+      document.getElementById('temp').textContent = `${temp}°C`;
+      document.getElementById('feels').textContent = `${feels}°C`;
       document.getElementById('weather').textContent = weather;
+      try{
+        //get aq data
+        const aq = json.aq.results[0].measurements[0]
+        document.getElementById('aq_param').textContent = ` (${aq.parameter}):`;
+        document.getElementById('aq_quality').textContent = `${aq.value}${aq.unit}`;
+      } catch (error) {
+        console.error(error);
+        document.getElementById('aq_quality').textContent = "No Data";
+      }
+
+      //console.log(aq)
   });
   } else {
     console.log('Geolocation is not available')

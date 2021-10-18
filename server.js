@@ -44,11 +44,20 @@ app.get('/weather/:lat/:lon', async (request, response) => {
     const lat = request.params.lat;
     const lon = request.params.lon;
     const APIkey = process.env.API_KEY
-    const apiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${APIkey}`
-    const data = await fetch(apiUrl);
-    const json = await data.json();
-    console.log(lat, lon);
-    response.json(json);
+
+    const weatherUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${APIkey}`
+    const weatherResponse = await fetch(weatherUrl);
+    const weatherData = await weatherResponse.json();
+    
+    const aqUrl = `https://u50g7n0cbj.execute-api.us-east-1.amazonaws.com/v2/latest?limit=100&page=1&offset=0&sort=desc&coordinates=${lat},${lon}&radius=1000&order_by=lastUpdated&dumpRaw=false`
+    const aqResponse = await fetch(aqUrl);
+    const aqData = await aqResponse.json();
+
+    const data = {
+        weather: weatherData,
+        aq: aqData,
+    }
+    response.json(data);
 })
 
 app.post('/weather', (request, response) => {
