@@ -26,7 +26,8 @@ const client = new MongoClient(url);
 //add endpoints
 app.get('/api', async (request, response) => {
     //access info from db and send to response
-    accessDb(response, "", "weather", "location-app");
+    const query = ""
+    accessDb(response, query, "weather", "location-app");
 });
 
 app.get('/weather/:lat/:lon', async (request, response) => {

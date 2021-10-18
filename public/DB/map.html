@@ -30,6 +30,7 @@
         <div class="collapse navbar-collapse" id="navbar">
             <ul class="navbar-nav">
               <a class="nav-item nav-link" id="home" href="../index.html">Home</a>
+              <a class="nav-item nav-link" id="weather" href="../weather/weather.html">Weather</a>
               <a class="nav-item nav-link" id="ISS" href="../ISS/ISS.html">ISS page</a>
               <a class="nav-item nav-link" id="DB" href="../DB/db.html">Database</a>
             </div>
@@ -41,48 +42,15 @@
         <!--Top row -->
         <div class="row">
           <div class="col-md-10">
-            <h1>The weather here</h1>
-          </div>
-          <div class="col-md-1">
-            <!-- User Input -->
-            <button type="button" class="btn btn-primary mt-2">Geolocate</button>
+            <h1>Weather database entries</h1>
           </div>
         </div>
       
         <!--Second Row -->
         <div class="row">
-          <div class="col-md-9">
+          <div class="col-md-10">
             <!-- Map -->
             <div id="geoMap"></div>
-          </div>
-          <div class="col-md-2">
-            <!-- Location info -->
-            <table id="location-table" class="table">
-              <thead>
-                <tr>
-                  <td>Latitude:</td>
-                  <td><span id="lat"></span></td>
-                </tr>
-                <tr>
-                  <td>Longitude:</td>
-                  <td><span id="lon"></span></td>
-                </tr>
-                <tr>
-                  <td>Temperature:</td>
-                  <td><span id="temp"></span></td>
-                </tr>
-                <tr>
-                  <td>Feels like:</td>
-                  <td><span id="feels"></span></td>
-                </tr>
-                <tr>
-                  <td>Weather:</td>
-                  <td><span id="weather"></span></td>
-                </tr>
-              </thead>
-              <tbody id="location-table-body">
-              </tbody>
-            </table>
           </div>
         </div>
       </div>
