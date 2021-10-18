@@ -24,39 +24,15 @@ function geolocate(){
       const response = await fetch(`/weather/${latitude}/${longitude}`);
       const json = await response.json();
 
-      //parse weather data
-      const weather = json.weather.weather['0'].main
-      const temp = (json.weather.main.temp - 273.15)
-      const feels = (json.weather.main.feels_like - 273.15)
-      const aqResults = json.aq.results
-      //parse air quality data
-      let aqParam, aqQuality, aqValue, aqUnit;
-      if (aqResults.length > 0){
-        const measurements = aqResults[0].measurements
-        measurements.forEach((elem, ind) => {
-          // get values
-          const parameter = elem.parameter
-          const value = elem.value
-          const unit = elem.unit
-          
-          //insert into table
-          const tbody = document.getElementById("locationtablebody")
-          const tr = tbody.insertRow();
-          const tdName = tr.insertCell();
-          tdName.appendChild(document.createTextNode(`${parameter}:`));
-          const tdInfo = tr.insertCell();
-          tdInfo.appendChild(document.createTextNode(`${value}${unit}`));
-        })
-      }
+      //add weather+location data to table
+      addStaticData(latitude, longitude, json)
+      //add air quality data to table
+      addDynamicData(json.aq.results)
+
 
       // console.log(aqResults.length)
       // console.log(aqResults)
-      //add info to webpage
-      document.getElementById('lat').textContent = `${latitude}`;
-      document.getElementById('lon').textContent = `${longitude}`;
-      document.getElementById('temp').textContent = `${temp.toFixed(2)}°C`;
-      document.getElementById('feels').textContent = `${feels.toFixed(2)}°C`;
-      document.getElementById('weather').textContent = weather;
+
       // try{
       //   //get aq data
       //   const aq = json.aq.results[0].measurements[0]
@@ -83,4 +59,57 @@ function geolocate(){
   } else {
     console.log('Geolocation is not available')
   }
+}
+
+function addStaticData(latitude, longitude, data){
+  //parse data
+  const weather = data.weather.weather['0'].main;
+  const temp = (data.weather.main.temp - 273.15);
+  const feels = (data.weather.main.feels_like - 273.15);
+  
+  //add info to webpage
+  document.getElementById('lat').textContent = `${latitude}`;
+  document.getElementById('lon').textContent = `${longitude}`;
+  document.getElementById('temp').textContent = `${temp.toFixed(2)}°C`;
+  document.getElementById('feels').textContent = `${feels.toFixed(2)}°C`;
+  document.getElementById('weather').textContent = weather;
+}
+
+function addDynamicData(data){
+  //delete old table
+  const oldTableBody = document.getElementById("location-table-body")
+  oldTableBody.remove()
+
+  //create new table
+  const tbody = document.createElement("tbody")
+  tbody.id = "location-table-body"
+
+  //insert first row
+  const tr1 = tbody.insertRow()
+  const td1 = tr1.insertCell()
+  td1.appendChild(document.createTextNode("Air Quality:"))
+  
+  // insert air quality data if available
+  if (data.length > 0){
+    const measurements = data[0].measurements;
+    measurements.forEach((elem, ind) => {
+      // get values
+      const parameter = elem.parameter
+      const value = elem.value
+      const unit = elem.unit
+      //add rows
+      const tr = tbody.insertRow();
+      const tdName = tr.insertCell();
+      tdName.appendChild(document.createTextNode(`${parameter}:`));
+      const tdInfo = tr.insertCell();
+      tdInfo.appendChild(document.createTextNode(`${value}${unit}`));
+    })
+  } else{
+    const td2 = tr1.insertCell()
+    td2.appendChild(document.createTextNode("No Data"))
+  }
+
+  //insert into main table
+  const tbl = document.getElementById("location-table")
+  tbl.appendChild(tbody)
 }

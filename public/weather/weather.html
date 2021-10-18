@@ -57,8 +57,8 @@
           </div>
           <div class="col-md-2">
             <!-- Location info -->
-            <table class="table">
-              <tbody id="locationtablebody">
+            <table id="location-table" class="table">
+              <thead>
                 <tr>
                   <td>Latitude:</td>
                   <td><span id="lat"></span></td>
@@ -79,10 +79,8 @@
                   <td>Weather:</td>
                   <td><span id="weather"></span></td>
                 </tr>
-                <tr>
-                  <td>Air quality<span id="aq_param">:</span></td>
-                  <td><span id="aq_quality"></span></span></td>
-                </tr>
+              </thead>
+              <tbody id="location-table-body">
               </tbody>
             </table>
           </div>
