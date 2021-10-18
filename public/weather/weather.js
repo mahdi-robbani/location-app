@@ -24,24 +24,15 @@ function geolocate(){
       const response = await fetch(`/weather/${latitude}/${longitude}`);
       const json = await response.json();
 
+      //parse data
+      const weather = json.weather
+      const aqArray = json.aq.results
+
       //add weather+location data to table
-      addStaticData(latitude, longitude, json)
+      addStaticData(latitude, longitude, weather)
       //add air quality data to table
-      addDynamicData(json.aq.results)
+      addDynamicData(aqArray)
 
-
-      // console.log(aqResults.length)
-      // console.log(aqResults)
-
-      // try{
-      //   //get aq data
-      //   const aq = json.aq.results[0].measurements[0]
-      //   document.getElementById('aq_param').textContent = ` (${aq.parameter}):`;
-      //   document.getElementById('aq_quality').textContent = `${aq.value}${aq.unit}`;
-      // } catch (error) {
-      //   console.error(error);
-      //   document.getElementById('aq_quality').textContent = "No Data";
-      // }
 
       //send data to server (store in db)
       const data = {latitude, longitude};
@@ -63,9 +54,9 @@ function geolocate(){
 
 function addStaticData(latitude, longitude, data){
   //parse data
-  const weather = data.weather.weather['0'].main;
-  const temp = (data.weather.main.temp - 273.15);
-  const feels = (data.weather.main.feels_like - 273.15);
+  const weather = data.weather['0'].main;
+  const temp = (data.main.temp - 273.15);
+  const feels = (data.main.feels_like - 273.15);
   
   //add info to webpage
   document.getElementById('lat').textContent = `${latitude}`;
