@@ -65,7 +65,7 @@ app.post('/weather', (request, response) => {
         status: "success",
         data: request.body,
     })
-    //updateLocalFile(request)
+    console.log(request.body)
     updateDb(request, "weather")
 });
 
@@ -121,15 +121,18 @@ async function updateDb(request, collectionName){
         //await listDatabases(client);
 
         //update database
-        newLocation = {
-            latitude: request.body.latitude,
-            longitude: request.body.longitude,
+        const newLocation = {
             date: Date.now(),
-            city: request.body.city,
+            lat: request.body.latitude,
+            long: request.body.longitude,
+            weather: request.body.weather.weather[0].main,
+            temp: request.body.weather.main.temp,
+            feels: request.body.weather.main.feels_like,
+            aqArray: request.body.aqArray,
         }
         await createLocation(client, newLocation, collectionName);
 
-    } catch (e) {
+    } catch (e) {   
         console.error(e)
     } finally {
         //close connection after performing all operations

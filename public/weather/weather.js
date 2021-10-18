@@ -21,12 +21,12 @@ function geolocate(){
       geoMap.setView([latitude, longitude], 10);
 
       //send get request to server to retreive weather + aq information
-      const response = await fetch(`/weather/${latitude}/${longitude}`);
-      const json = await response.json();
+      const apiResponse = await fetch(`/weather/${latitude}/${longitude}`);
+      const apiData = await apiResponse.json();
 
       //parse data
-      const weather = json.weather
-      const aqArray = json.aq.results
+      const weather = apiData.weather
+      const aqArray = apiData.aq.results
 
       //add weather+location data to table
       addStaticData(latitude, longitude, weather)
@@ -35,8 +35,7 @@ function geolocate(){
 
 
       //send data to server (store in db)
-      const data = {latitude, longitude};
-      console.log(data)
+      const data = {latitude, longitude, weather, aqArray};
       const options = {
         method: 'POST',
         headers: {
@@ -44,8 +43,9 @@ function geolocate(){
         },
         body: JSON.stringify(data),
       };
-
-      //console.log(aq)
+      const dbResponse = await fetch('/weather', options);
+      const dbJson = await dbResponse.json();
+      console.log(dbJson)
   });
   } else {
     console.log('Geolocation is not available')
