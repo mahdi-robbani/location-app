@@ -1,4 +1,5 @@
-async function getData(){
+async function createTable(){
+    //get data from server and createa  dynamic table
     const request = await fetch('../api/');
     const data = await request.json();
     console.log(data[0])
@@ -21,7 +22,6 @@ async function getData(){
         "Weather": "weather",
         "": "empty"
     }
-    //const columns = ["#", "Latitude", "Longitude", "Date", "City", ""]
     const columns = Object.keys(columnMap);
     for (colName of columns){
         const topd = topRow.insertCell();
@@ -82,4 +82,4 @@ async function deleteEntry(locationID){
     location.reload();
 }
 
-getData();
+createTable();

@@ -27,7 +27,7 @@ const client = new MongoClient(url);
 app.get('/api', async (request, response) => {
     //access info from db and send to response
     const query = ""
-    accessDb(response, query, "weather", "location-app");
+    findDb(response, query, "weather", "location-app");
 });
 
 app.get('/weather/:lat/:lon', async (request, response) => {
@@ -73,7 +73,7 @@ app.post('/weather', (request, response) => {
         humidity: request.body.weather.main.humidity,
         aqArray: request.body.aqArray,
     }
-    updateDb(newLocation, "weather", "location-app")
+    addOneDb(newLocation, "weather", "location-app")
 });
 
 app.post('/delete_location', (request, response) => {
@@ -82,7 +82,7 @@ app.post('/delete_location', (request, response) => {
         info: `Deleted location ID: ${request.body.locationID}`
     });
     const query = {"_id" : ObjectId(request.body.locationID)};
-    deleteLocation(query, "weather", "location-app")
+    deleteOneDb(query, "weather", "location-app")
 })
 
 // app.post('/api', (request, response) => {
@@ -94,7 +94,7 @@ app.post('/delete_location', (request, response) => {
 //     updateDb(request, "location")
 // });
 
-async function deleteLocation(query, collectionName, dbName){
+async function deleteOneDb(query, collectionName, dbName){
     try{
         //connect to client
         await client.connect();
@@ -113,7 +113,7 @@ async function deleteLocation(query, collectionName, dbName){
     }
 }
 
-async function accessDb(response, query, collectionName, dbName){
+async function findDb(response, query, collectionName, dbName){
     // query data from db
     try{
         //connect to client
@@ -132,7 +132,7 @@ async function accessDb(response, query, collectionName, dbName){
     }
 }
 
-async function updateDb(newLocation, collectionName, dbName){
+async function addOneDb(newLocation, collectionName, dbName){
     //update db with new data
     try{
         //connect to client
