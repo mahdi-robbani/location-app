@@ -7,7 +7,8 @@ A simple web app built using Node.js, Leaflet.js, Express, MongoDB and Bootstrap
 4. A page that tracks the International Space Station (ISS) in real time.
 
 ## Running the app
-Start the server by using `node server.js`
+1. Install dependencies  by using `npm install`
+2. Start the server by using `node server.js`
 
 ## Viewing the web page
 Go to `http://localhost:3000/` on a web browser
