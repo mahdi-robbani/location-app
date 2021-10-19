@@ -11,8 +11,10 @@ import fetch from 'node-fetch';
 
 //create app
 const app = express();
+//get port from environment variable or user localhost:3000
+const port = process.env.PORT || 3000
 //start listening
-app.listen(3000, () => console.log('Listening at port 3000'))
+app.listen(3000, () => console.log(`Listening at port: ${port}`))
 //use the express library to host static files
 app.use(express.static('public'));
 //enable ability to receive json data
