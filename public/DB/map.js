@@ -15,7 +15,7 @@ async function getData(){
 
   for (item of data){
     //create marker
-    const marker = L.marker([item.lat, item.long]).addTo(geoMap)
+    const marker = L.marker([item.lat, item.lon]).addTo(geoMap)
     //get marker text
     let aq;
     if (item.aqArray.length > 0) {
@@ -25,7 +25,7 @@ async function getData(){
       aq = 'Air Quality: No Data Available'
     }
     const txt = `Latitude: ${item.lat.toFixed(2)},
-                 Longitude: ${item.long.toFixed(2)},
+                 Longitude: ${item.lon.toFixed(2)},
                  Weather: ${item.weather},
                  Temperature: ${(item.temp - 273.15).toFixed(2)}°C,
                  Feels like: ${(item.feels - 273.15).toFixed(2)}°C,
