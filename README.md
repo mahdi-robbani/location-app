@@ -12,7 +12,6 @@ To install and run the app locally:
 2. Rename `.env_sample` to `.env` and fill in the required varibles
 3. Start the server by using `node server.js`
 
-Alternatively, the app can be viewed on [Heroku](https://hidden-dusk-05961.herokuapp.com/index.html)
 
 ## Viewing the web page
 Go to `http://localhost:3000/` on a web browser
