@@ -8,7 +8,6 @@ import fs from 'fs'
 import { MongoClient, CURSOR_FLAGS, ObjectId } from 'mongodb'
 import fetch from 'node-fetch';
 
-
 //create app
 const app = express();
 //get port from environment variable or user localhost:3000
@@ -20,10 +19,14 @@ app.use(express.static('public'));
 //enable ability to receive json data
 app.use(express.json({limit: '1mb'}));
 
-//db url
-const url = 'mongodb://127.0.0.1:27017'
+//uncomment to use local uri
+// const db_uri = 'mongodb://127.0.0.1:27017'
+
+//use mongodb atlas
+const db_uri = `mongodb+srv://${process.env.DB_USER}:${process.env.PASSWORD}@cluster0.b8ua4.mongodb.net/location-app.?retryWrites=true&w=majority`
+
 //new instance of mongo client
-const client = new MongoClient(url);
+const client = new MongoClient(db_uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
 //add endpoints
 app.get('/api', async (request, response) => {
