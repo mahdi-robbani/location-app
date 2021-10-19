@@ -1,6 +1,7 @@
 async function getData(){
     const request = await fetch('../api/');
     const data = await request.json();
+    console.log(data[0])
 
     // add table
     const tbl = document.createElement('table')
@@ -9,7 +10,19 @@ async function getData(){
     const thead = document.createElement('thead')
     thead.className = "table-dark"
     const topRow = thead.insertRow();
-    const columns = ["#", "Latitude", "Longitude", "Date", "City", ""]
+    const columnMap = {
+        "#": "_id",
+        "Country": "country",
+        "Latitude": "lat",
+        "Longitude": "lon",
+        "Temperature": "temp",
+        "Feels Like": "feels",
+        "Humidity": "humidity",
+        "Weather": "weather",
+        "": "empty"
+    }
+    //const columns = ["#", "Latitude", "Longitude", "Date", "City", ""]
+    const columns = Object.keys(columnMap);
     for (colName of columns){
         const topd = topRow.insertCell();
         topd.appendChild(document.createTextNode(colName))
@@ -20,24 +33,33 @@ async function getData(){
     const tbody = document.createElement('tbody')
     data.forEach((elem, ind) => {
         tr = tbody.insertRow();
-        for (dataName in elem){
-            const td = tr.insertCell();
-            let text;
-            if (dataName === "_id"){
-                td.scope = "row"
-                text = ind + 1;
+        for (let [colName, dataName] of Object.entries(columnMap)){
+            if (dataName !== "empty") {
+                const td = tr.insertCell();
+                let text;
+                if (dataName === "_id"){
+                    td.scope = "row"
+                    text = ind + 1;
+                } else if (dataName === "lat" || dataName === "lon") {
+                    text = elem[dataName] ? `${(elem[dataName]).toFixed(2)}°` : 'No Data'
+                } else if (dataName === "temp" || dataName === "feels") {
+                    text = elem[dataName] ? `${(elem[dataName] - 273.15).toFixed(2)}°C` : 'No Data'
+                } else if (dataName === "humidity") {
+                    text = elem[dataName] ? `${(elem[dataName])}%` : 'No Data'
+                } else {
+                    //replace empty inputs with none
+                    text = elem[dataName] ? elem[dataName] : 'No Data'
+                }
+                td.appendChild(document.createTextNode(text))
+            } else {
+                const emptyTd = tr.insertCell()
+                const btn = emptyTd.appendChild(document.createElement("button"))
+                btn.textContent = "Delete"
+                btn.className = "btn btn-primary"
+                btn.onclick = () => { deleteEntry(elem["_id"]) };
             }
-            else{
-                //replace empty inputs with none
-                text = elem[dataName] ? elem[dataName] : 'None'
-            }
-            td.appendChild(document.createTextNode(text))
         }
-        const emptyTd = tr.insertCell()
-        const btn = emptyTd.appendChild(document.createElement("button"))
-        btn.textContent = "Delete"
-        btn.className = "btn btn-primary"
-        btn.onclick = () => { deleteEntry(elem["_id"]) };
+
     })
     tbl.append(tbody)
     //Add to page

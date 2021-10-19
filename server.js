@@ -3,7 +3,7 @@ import dotenv from 'dotenv'
 dotenv.config()
 
 //import packages
-import express from 'express'
+import express, { request } from 'express'
 import fs from 'fs'
 import { MongoClient, CURSOR_FLAGS, ObjectId } from 'mongodb'
 import fetch from 'node-fetch';
@@ -65,7 +65,7 @@ app.post('/weather', (request, response) => {
     const newLocation = {
         date: Date.now(),
         lat: request.body.latitude,
-        long: request.body.longitude,
+        lon: request.body.longitude,
         country: request.body.weather.sys.country,
         weather: request.body.weather.weather[0].main,
         temp: request.body.weather.main.temp,
@@ -80,8 +80,9 @@ app.post('/delete_location', (request, response) => {
     response.json({
         status: "success",
         info: `Deleted location ID: ${request.body.locationID}`
-    })
-    deleteLocation(request.body.locationID)
+    });
+    const query = {"_id" : ObjectId(request.body.locationID)};
+    deleteLocation(query, "weather", "location-app")
 })
 
 // app.post('/api', (request, response) => {
@@ -93,15 +94,17 @@ app.post('/delete_location', (request, response) => {
 //     updateDb(request, "location")
 // });
 
-async function deleteLocation(locationID){
+async function deleteLocation(query, collectionName, dbName){
     try{
         //connect to client
         await client.connect();
 
         //delete location
-        const result = await client.db("location-app").collection("locations").deleteOne({ "_id" : ObjectId(locationID) } );
-        console.log(`${result.deletedCount} ID deleted: ${locationID}`);
-
+        console.log(query)
+        const result = await client.db(dbName).collection(collectionName).deleteOne(query);
+        console.log(`Update DB: ${dbName}`)
+        console.log(`Updated collection: ${collectionName}`)
+        console.log(`${result.deletedCount} ID deleted: ${query._id}`);
     } catch (e) {
         console.error(e)
     } finally {
