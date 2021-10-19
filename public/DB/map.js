@@ -28,7 +28,8 @@ async function getData(){
                  Longitude: ${item.long.toFixed(2)},
                  Weather: ${item.weather},
                  Temperature: ${(item.temp - 273.15).toFixed(2)}°C,
-                 Feels like: ${(item.feels - 273.15).toFixed(2)}°C, 
+                 Feels like: ${(item.feels - 273.15).toFixed(2)}°C,
+                 Humidity: ${item.humidity}%,
                  ${aq}`
     //add text to marker
     marker.bindPopup(txt)

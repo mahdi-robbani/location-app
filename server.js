@@ -66,9 +66,11 @@ app.post('/weather', (request, response) => {
         date: Date.now(),
         lat: request.body.latitude,
         long: request.body.longitude,
+        country: request.body.weather.sys.country,
         weather: request.body.weather.weather[0].main,
         temp: request.body.weather.main.temp,
         feels: request.body.weather.main.feels_like,
+        humidity: request.body.weather.main.humidity,
         aqArray: request.body.aqArray,
     }
     updateDb(newLocation, "weather", "location-app")

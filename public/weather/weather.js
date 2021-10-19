@@ -36,6 +36,7 @@ function geolocate(){
 
       //send data to server (store in db)
       const data = {latitude, longitude, weather, aqArray};
+      console.log(data)
       const options = {
         method: 'POST',
         headers: {
@@ -57,12 +58,14 @@ function addStaticData(latitude, longitude, data){
   const weather = data.weather['0'].main;
   const temp = (data.main.temp - 273.15);
   const feels = (data.main.feels_like - 273.15);
+  const humidity = data.main.humidity;
   
   //add info to webpage
   document.getElementById('lat').textContent = `${latitude}`;
   document.getElementById('lon').textContent = `${longitude}`;
   document.getElementById('temp').textContent = `${temp.toFixed(2)}°C`;
   document.getElementById('feels').textContent = `${feels.toFixed(2)}°C`;
+  document.getElementById('humid').textContent = `${humidity}%`;
   document.getElementById('weather').textContent = weather;
 }
 
