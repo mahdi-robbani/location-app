@@ -32,7 +32,7 @@ async function getData(){
     issMarker.setLatLng([latitude, longitude]);
     // update and draw line
     posArr.push([latitude, longitude]);
-    L.polygon(posArr).addTo(issMap);
+    L.polyline(posArr).addTo(issMap);
     //replace spans with data
     document.getElementById('lat').textContent = latitude.toFixed(4);
     document.getElementById('lon').textContent = longitude.toFixed(4);
