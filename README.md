@@ -8,7 +8,8 @@ A simple web app built using Node.js, Leaflet.js, Express, MongoDB and Bootstrap
 
 ## Running the app
 1. Install dependencies  by using `npm install`
-2. Start the server by using `node server.js`
+2. Rename `.env_sample` to `.env` and fill in the required varibles
+3. Start the server by using `node server.js`
 
 ## Viewing the web page
 Go to `http://localhost:3000/` on a web browser
